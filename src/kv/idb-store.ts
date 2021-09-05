@@ -1,5 +1,5 @@
 import {deleteSentinel, WriteImplBase} from './write-impl-base';
-import type {Read, Store, Write} from './store';
+import type {Read, Store, Value, Write} from './store';
 
 const RELAXED = {durability: 'relaxed'};
 const OBJECT_STORE = 'chunks';
@@ -56,7 +56,7 @@ class ReadImpl {
     return (await wrap(objectStore(this._tx).count(key))) > 0;
   }
 
-  async get(key: string): Promise<Uint8Array | undefined> {
+  async get(key: string): Promise<Value | undefined> {
     return wrap(objectStore(this._tx).get(key));
   }
 

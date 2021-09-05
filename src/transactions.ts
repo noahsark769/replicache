@@ -14,6 +14,7 @@ import {throwIfClosed} from './transaction-closed-error';
 import {asyncIterableToArray} from './async-iterable-to-array';
 import * as embed from './embed/mod';
 import type * as db from './db/mod';
+import {cloneDeep} from 'lodash-es';
 
 /**
  * ReadTransactions are used with [[Replicache.query]] and
@@ -98,7 +99,9 @@ export class ReadTransactionImpl implements ReadTransaction {
 
   async get(key: string): Promise<JSONValue | undefined> {
     throwIfClosed(this);
-    return await embed.get(this._transactionId, key);
+    return cloneDeep(await embed.get(this._transactionId, key)) as
+      | JSONValue
+      | undefined;
   }
 
   async has(key: string): Promise<boolean> {
